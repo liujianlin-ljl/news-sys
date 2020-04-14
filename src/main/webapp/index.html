@@ -1,11 +1,12 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>首页</title>
-    <link href="CSS/main.css" rel="stylesheet" type="text/css">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>新闻中国</title>
+    <link href="CSS/main.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="JS/vue.js"></script>
 </head>
-<body>
 <body>
 <div id="app">
     <div id="header">
@@ -56,24 +57,21 @@
             <div class="class_type"><img src="Images/class_type.gif" alt="新闻中心"/></div>
             <div class="content">
                 <ul class="class_date">
-                    <li id='class_month'>
-                        <c:forEach var="col" items="${colList}">
-                            <a href='#'><b>${col.colTitle}</b></a>
-                        </c:forEach>
+                    <li id='class_month' >
+                        <a href='#' v-for="col in colList" @click="getNews(col.colId)">
+                            <b>{{col.colTitle}}</b>
+                        </a>
                     </li>
                 </ul>
+
                 <ul class="classlist">
-                    <c:forEach var="news" items="${newsList}" varStatus="index">
-                        <li>
-                            <a href='newspages/news_add.html'>${news.nTitle}</a>
-                            <span>${news.time}</span>
-                        </li>
-                        <c:if test="index%5==0">
-                            <li class='space'></li>
-                        </c:if>
-                    </c:forEach>
+                    <li v-for="(n,index) in newsList">
+                        <a href='/news/read/'>{{n.ntitle}}</a><span>{{n.time}}</span>
+                        <p class="space" v-show="index>0&&index%4==0"></p>
+                    </li>
                     <p align="right"> 当前页数:[1/2]&nbsp; <a href="#">下一页</a> <a href="#">末页</a></p>
                 </ul>
+
             </div>
             <div class="picnews">
                 <ul>
@@ -107,7 +105,7 @@
             新闻中国 版权所有 </p>
     </div>
 </div>
-
-</body>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="JS/news.js"></script>
 </body>
 </html>

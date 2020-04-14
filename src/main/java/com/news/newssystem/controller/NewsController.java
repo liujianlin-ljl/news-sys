@@ -25,16 +25,6 @@ public class NewsController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping("/test")
-    @ResponseBody
-    public Object test(){
-
-        return newsService.findAll();
-    }
-    @RequestMapping("/test02")
-    public Object test02(){
-        return "login";
-    }
     @RequestMapping("/list")
     public Object getNews(HttpServletRequest req){
         HttpSession session=req.getSession();
@@ -42,18 +32,37 @@ public class NewsController {
         return "redirect:/index.jsp";
     }
 
+    /**
+     * 根据栏目获取新闻列表
+     * @param col
+     * @return
+     */
     @RequestMapping("/list/{col_id}")
     @ResponseBody
     public Object getNewsByColId(@PathVariable("col_id") int col){
         QueryWrapper<News> wrapper=new QueryWrapper<>();
-        wrapper.eq("col_id",col);
+        wrapper.select("n_id","n_title","time").eq("col_id",col);
         List<News> newsList= newsService.list(wrapper);
-        for(News news:newsList){
-            QueryWrapper<User> userWrapper=new QueryWrapper<>();
-            userWrapper.select("u_name").eq("u_id",news.getUId());
-            User user = userService.getOne(userWrapper);
-            news.setNickName(user.getUName());
-        }
-        return newsList;
+        return newsList==null ? "请求错误" : newsList;
     }
+
+    /**
+     * 阅读新闻，根据新闻id查询一条新闻
+     * @param id
+     * @return
+     */
+    @RequestMapping("/read/{id}")
+    public String getNewsById(@PathVariable("id") int id,HttpServletRequest request){
+        //条件构造器：根据新闻id查询
+        QueryWrapper<News> wrapper=new QueryWrapper<>();
+        wrapper.eq("n_id",id);
+        News news= newsService.getOne(wrapper);
+        QueryWrapper<User> userWrapper=new QueryWrapper<>();
+        userWrapper.select("u_name").eq("u_id",news.getUId());
+        User user = userService.getOne(userWrapper);
+        news.setNickName(user.getUName());
+        request.setAttribute("news",news);
+        return "newspages/news_read.jsp";
+    }
+
 }

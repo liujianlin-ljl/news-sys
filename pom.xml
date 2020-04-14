@@ -50,6 +50,12 @@
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <version>3.3.1.tmp</version>
         </dependency>
+        <!--json工具-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.18</version>
+        </dependency>
         <!--JSP相关-->
         <dependency>
             <groupId>javax.servlet</groupId>
