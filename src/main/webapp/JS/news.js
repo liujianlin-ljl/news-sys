@@ -28,6 +28,9 @@ let vm = new Vue({
                 function (err) {//请求失败
                     console.log("请求失败："+err);
                 });
+        },
+        getUrl(nId){
+            return "/news/read/"+nId;
         }
     },
     mounted:function () {

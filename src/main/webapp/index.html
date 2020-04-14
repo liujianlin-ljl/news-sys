@@ -63,15 +63,13 @@
                         </a>
                     </li>
                 </ul>
-
                 <ul class="classlist">
                     <li v-for="(n,index) in newsList">
-                        <a href='/news/read/'>{{n.ntitle}}</a><span>{{n.time}}</span>
+                        <a :href="getUrl(n.nid)">{{n.title}}</a><span>{{n.time}}</span>
                         <p class="space" v-show="index>0&&index%4==0"></p>
                     </li>
                     <p align="right"> 当前页数:[1/2]&nbsp; <a href="#">下一页</a> <a href="#">末页</a></p>
                 </ul>
-
             </div>
             <div class="picnews">
                 <ul>

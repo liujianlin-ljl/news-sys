@@ -25,6 +25,13 @@ public class NewsController {
     @Autowired
     private UserService userService;
 
+    @RequestMapping("/test")
+    @ResponseBody
+    public Object test(){
+        QueryWrapper<News> wrapper=new QueryWrapper<News>();
+        wrapper.eq("col_id",1);
+        return newsService.list(wrapper);
+    }
     @RequestMapping("/list")
     public Object getNews(HttpServletRequest req){
         HttpSession session=req.getSession();
@@ -41,8 +48,12 @@ public class NewsController {
     @ResponseBody
     public Object getNewsByColId(@PathVariable("col_id") int col){
         QueryWrapper<News> wrapper=new QueryWrapper<>();
-        wrapper.select("n_id","n_title","time").eq("col_id",col);
+        wrapper.eq("col_id",col);
+//                .select(News.class,info->info.getColumn().equals("n_id")
+//                        && info.getColumn().equals("n_title")
+//                        &&info.getColumn().equals("time"));
         List<News> newsList= newsService.list(wrapper);
+        newsList.forEach(System.out::println);
         return newsList==null ? "请求错误" : newsList;
     }
 
@@ -62,7 +73,8 @@ public class NewsController {
         User user = userService.getOne(userWrapper);
         news.setNickName(user.getUName());
         request.setAttribute("news",news);
-        return "newspages/news_read.jsp";
+        System.out.println("新闻："+news.getTitle());
+        return "newspages/news_read";
     }
 
 }

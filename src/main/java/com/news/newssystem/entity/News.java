@@ -13,9 +13,11 @@ public class News {
     @TableId
     private int nId;
     //标题
-    private String nTitle;
+    @TableField("n_title")
+    private String title;
     //内容
-    private String nContent;
+    @TableField("n_content")
+    private String content;
     //栏目
     private int colId;
     private int uId;
